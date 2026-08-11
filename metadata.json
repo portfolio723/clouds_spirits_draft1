@@ -1,0 +1,6 @@
+{
+  "name": "Brand Compass",
+  "description": "Brand review and design system compass app",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
