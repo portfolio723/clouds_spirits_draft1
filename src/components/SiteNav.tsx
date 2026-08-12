@@ -1,4 +1,5 @@
 import { Link } from "@tanstack/react-router";
+import waLogo from "@/assets/WA.png";
 
 const items = [
   { to: "/", label: "Overview" },
@@ -13,10 +14,14 @@ export function SiteNav() {
     <header className="sticky top-0 z-40 border-b border-border bg-background/85 backdrop-blur-xl">
       <nav
         aria-label="Draft sections"
-        className="page-shell flex h-16 items-center justify-between gap-6"
+        className="page-shell flex min-h-[80px] py-2 items-center justify-between gap-6"
       >
-        <Link to="/" className="shrink-0 font-display text-[17px] tracking-tight text-foreground">
-          Clouds &amp; Spirits
+        <Link to="/" className="shrink-0 flex items-center">
+          <img
+            src={waLogo}
+            alt="Clouds & Spirits"
+            className="h-14 sm:h-16 w-auto max-w-[240px] object-contain object-left"
+          />
         </Link>
 
         <ul className="-mx-2 hidden items-center gap-1 overflow-x-auto md:flex">

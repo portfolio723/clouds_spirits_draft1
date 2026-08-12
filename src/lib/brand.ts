@@ -4,6 +4,7 @@ import logo12 from "@/assets/12.png";
 import logo13 from "@/assets/13.png";
 import logo14 from "@/assets/14.png";
 import logo15 from "@/assets/15.png";
+import logo16 from "@/assets/16.jpeg";
 
 export const heroImage = heroImg;
 
@@ -77,25 +78,18 @@ export const logoAssets: LogoAsset[] = [
     image: logo12,
   },
   {
-    id: "13",
+    id: "15",
     index: "03",
     title: "Logo Application 03",
     description: "Logo variation and application showcase 03.",
-    image: logo13,
+    image: logo15,
   },
   {
     id: "14",
     index: "04",
     title: "Logo Application 04",
     description: "Logo variation and application showcase 04.",
-    image: logo14,
-  },
-  {
-    id: "15",
-    index: "05",
-    title: "Logo Application 05",
-    description: "Logo variation and application showcase 05.",
-    image: logo15,
+    image: logo16,
   },
 ];
 

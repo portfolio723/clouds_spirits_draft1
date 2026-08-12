@@ -39,9 +39,7 @@ function LogosIndex() {
             key={asset.id}
             type="button"
             onClick={() => setOpen(index)}
-            className={`hover-lift overflow-hidden rounded-2xl border border-border text-left hover:border-border-strong ${
-              index === 4 ? "md:col-span-2" : ""
-            }`}
+            className="hover-lift overflow-hidden rounded-2xl border border-border text-left hover:border-border-strong"
           >
             <img
               src={asset.image}
