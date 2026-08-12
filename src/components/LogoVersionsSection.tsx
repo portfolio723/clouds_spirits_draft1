@@ -1,6 +1,3 @@
-import { useState } from "react";
-import { Lightbox } from "@/components/Lightbox";
-
 import v1 from "@/assets/v1.png";
 import v2 from "@/assets/v2.png";
 import v3 from "@/assets/v3.png";
@@ -44,8 +41,6 @@ export function LogoVersionsSection({
   subtitle = "Explore the logo concepts rendered on dark backgrounds.",
   className = "mt-12 mb-8",
 }: LogoVersionsSectionProps) {
-  const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
-
   return (
     <section className={className}>
       <div className="mb-6">
@@ -55,10 +50,8 @@ export function LogoVersionsSection({
 
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
         {logoVersions.map((version, index) => (
-          <button
+          <div
             key={version.id}
-            type="button"
-            onClick={() => setLightboxIndex(index)}
             className="group hover-lift relative overflow-hidden rounded-2xl border border-neutral-800 bg-black text-left flex flex-col transition-all duration-300 hover:border-neutral-600 shadow-md"
           >
             <div className="aspect-square w-full bg-black p-6 flex items-center justify-center relative overflow-hidden">
@@ -74,16 +67,9 @@ export function LogoVersionsSection({
               </span>
               <span className="text-[12px] text-neutral-400 font-mono">0{index + 1}</span>
             </div>
-          </button>
+          </div>
         ))}
       </div>
-
-      <Lightbox
-        items={logoVersions}
-        index={lightboxIndex}
-        onClose={() => setLightboxIndex(null)}
-        showNav={false}
-      />
     </section>
   );
 }
