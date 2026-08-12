@@ -1,8 +1,19 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { PageFooterNav } from "@/components/Page";
 import { heroImage } from "@/lib/brand";
 import { LogoVersionsSection } from "@/components/LogoVersionsSection";
+import hc1 from "@/assets/hc1.png";
+import hc2 from "@/assets/hc2.png";
+import hc3 from "@/assets/hc3.png";
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
+  type CarouselApi,
+} from "@/components/ui/carousel";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -23,8 +34,45 @@ export const Route = createFileRoute("/")({
   component: Overview,
 });
 
+const heroSlides = [
+  {
+    id: "hero-1",
+    image: heroImage,
+    alt: "Clouds & Spirits hero concept 1",
+    label: "Version 1",
+  },
+  {
+    id: "hero-hc1",
+    image: hc1,
+    alt: "Clouds & Spirits hero concept 2",
+    label: "Hero Concept 1",
+  },
+  {
+    id: "hero-hc2",
+    image: hc2,
+    alt: "Clouds & Spirits hero concept 3",
+    label: "Hero Concept 2",
+  },
+  {
+    id: "hero-hc3",
+    image: hc3,
+    alt: "Clouds & Spirits hero concept 4",
+    label: "Hero Concept 3",
+  },
+];
+
 function Overview() {
   const [open, setOpen] = useState(false);
+  const [api, setApi] = useState<CarouselApi>();
+  const [current, setCurrent] = useState(0);
+
+  useEffect(() => {
+    if (!api) return;
+    setCurrent(api.selectedScrollSnap());
+    api.on("select", () => {
+      setCurrent(api.selectedScrollSnap());
+    });
+  }, [api]);
 
   return (
     <>
@@ -67,20 +115,46 @@ function Overview() {
         ) : null}
       </section>
 
-      <figure className="group relative mt-14 overflow-hidden rounded-2xl border border-border">
-        <img
-          src={heroImage}
-          alt="Clouds & Spirits brand exploration"
-          width={1280}
-          height={960}
-          className="w-full object-cover transition-transform duration-500 group-hover:scale-[1.02]"
-        />
-        <div className="absolute top-4 left-4 z-10 opacity-0 transition-opacity duration-300 group-hover:opacity-100 pointer-events-none">
-          <span className="inline-flex items-center rounded-lg bg-black/80 px-3.5 py-1.5 text-[13px] font-medium tracking-wide text-white backdrop-blur-md border border-white/15 shadow-lg">
-            Version 1
-          </span>
+      <div className="relative mt-14">
+        <Carousel setApi={setApi} className="w-full">
+          <CarouselContent>
+            {heroSlides.map((slide) => (
+              <CarouselItem key={slide.id}>
+                <figure className="group relative overflow-hidden rounded-2xl border border-border">
+                  <img
+                    src={slide.image}
+                    alt={slide.alt}
+                    width={1280}
+                    height={960}
+                    className="w-full object-cover transition-transform duration-500 group-hover:scale-[1.02]"
+                  />
+                  <div className="absolute top-4 left-4 z-10 opacity-0 transition-opacity duration-300 group-hover:opacity-100 pointer-events-none">
+                    <span className="inline-flex items-center rounded-lg bg-black/80 px-3.5 py-1.5 text-[13px] font-medium tracking-wide text-white backdrop-blur-md border border-white/15 shadow-lg">
+                      {slide.label}
+                    </span>
+                  </div>
+                </figure>
+              </CarouselItem>
+            ))}
+          </CarouselContent>
+          <CarouselPrevious className="left-4 top-1/2 -translate-y-1/2 border-white/20 bg-black/60 text-white hover:bg-black/90 hover:text-white" />
+          <CarouselNext className="right-4 top-1/2 -translate-y-1/2 border-white/20 bg-black/60 text-white hover:bg-black/90 hover:text-white" />
+        </Carousel>
+
+        <div className="mt-4 flex justify-center gap-2">
+          {heroSlides.map((_, idx) => (
+            <button
+              key={idx}
+              type="button"
+              onClick={() => api?.scrollTo(idx)}
+              aria-label={`Go to slide ${idx + 1}`}
+              className={`h-2 rounded-full transition-all duration-300 ${
+                current === idx ? "w-8 bg-primary" : "w-2 bg-border hover:bg-muted-foreground"
+              }`}
+            />
+          ))}
         </div>
-      </figure>
+      </div>
 
       <section className="mt-16 grid gap-4 sm:grid-cols-3">
         {[

@@ -7,17 +7,19 @@ export function Lightbox({
   index,
   onClose,
   onIndexChange,
+  showNav = true,
 }: {
   items: LightboxItem[];
   index: number | null;
   onClose: () => void;
-  onIndexChange: (index: number) => void;
+  onIndexChange?: (index: number) => void;
+  showNav?: boolean;
 }) {
   const isOpen = index !== null;
 
   const step = useCallback(
     (delta: number) => {
-      if (index === null) return;
+      if (index === null || !onIndexChange) return;
       onIndexChange((index + delta + items.length) % items.length);
     },
     [index, items.length, onIndexChange],
@@ -27,12 +29,12 @@ export function Lightbox({
     if (!isOpen) return;
     const onKey = (event: KeyboardEvent) => {
       if (event.key === "Escape") onClose();
-      if (event.key === "ArrowRight") step(1);
-      if (event.key === "ArrowLeft") step(-1);
+      if (showNav && event.key === "ArrowRight") step(1);
+      if (showNav && event.key === "ArrowLeft") step(-1);
     };
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
-  }, [isOpen, onClose, step]);
+  }, [isOpen, onClose, step, showNav]);
 
   if (index === null) return null;
   const item = items[index];
@@ -64,24 +66,26 @@ export function Lightbox({
         />
       </div>
 
-      <div className="flex flex-wrap items-center justify-between gap-3 px-6 py-8">
-        <button
-          type="button"
-          onClick={() => step(-1)}
-          className="inline-flex h-11 items-center rounded-xl border border-border-strong px-4 text-[14px] font-medium"
-        >
-          ← Previous
-        </button>
-        <p className="order-first w-full text-center text-[14px] text-muted-foreground sm:order-none sm:w-auto">
-          {item.title}
-        </p>
-        <button
-          type="button"
-          onClick={() => step(1)}
-          className="inline-flex h-11 items-center rounded-xl border border-border-strong px-4 text-[14px] font-medium"
-        >
-          Next →
-        </button>
+      <div className="flex flex-wrap items-center justify-center gap-3 px-6 py-8 relative">
+        {showNav && (
+          <button
+            type="button"
+            onClick={() => step(-1)}
+            className="absolute left-6 inline-flex h-11 items-center rounded-xl border border-border-strong px-4 text-[14px] font-medium"
+          >
+            ← Previous
+          </button>
+        )}
+        <p className="text-center text-[14px] font-medium text-foreground">{item.title}</p>
+        {showNav && (
+          <button
+            type="button"
+            onClick={() => step(1)}
+            className="absolute right-6 inline-flex h-11 items-center rounded-xl border border-border-strong px-4 text-[14px] font-medium"
+          >
+            Next →
+          </button>
+        )}
       </div>
     </div>
   );

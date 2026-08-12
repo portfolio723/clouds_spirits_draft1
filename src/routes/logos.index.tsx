@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
-import { PageFooterNav, PageHeader } from "@/components/Page";
+import { PageFooterNav } from "@/components/Page";
 import { Lightbox } from "@/components/Lightbox";
 import { logoAssets } from "@/lib/brand";
 import { LogoVersionsSection } from "@/components/LogoVersionsSection";
@@ -28,10 +28,10 @@ function LogosIndex() {
 
   return (
     <>
-      <PageHeader
-        label="Draft 01"
-        title="Logos"
-        intro="Explore the logo variations and real-world applications for Clouds & Spirits."
+      <LogoVersionsSection
+        title="Logo Version Concepts"
+        subtitle="Version 1 through Version 4 rendered on black backgrounds."
+        className="mt-4 mb-12"
       />
 
       <div className="grid gap-6 md:grid-cols-2">
@@ -75,12 +75,6 @@ function LogosIndex() {
         index={open}
         onClose={() => setOpen(null)}
         onIndexChange={setOpen}
-      />
-
-      <LogoVersionsSection
-        title="Logo Version Concepts"
-        subtitle="Version 1 through Version 4 rendered on black backgrounds."
-        className="mt-14 mb-8"
       />
 
       <PageFooterNav

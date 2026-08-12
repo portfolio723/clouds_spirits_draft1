@@ -82,7 +82,7 @@ export function LogoVersionsSection({
         items={logoVersions}
         index={lightboxIndex}
         onClose={() => setLightboxIndex(null)}
-        onIndexChange={setLightboxIndex}
+        showNav={false}
       />
     </section>
   );
