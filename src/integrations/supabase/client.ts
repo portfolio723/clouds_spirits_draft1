@@ -35,11 +35,11 @@ function createSupabaseClient() {
   const SUPABASE_URL =
     import.meta.env["VITE_SUPABASE_URL"] ||
     process.env["SUPABASE_URL"] ||
-    "https://placeholder.supabase.co";
+    "https://bvcgfnwxrrccyjydwxkg.supabase.co";
   const SUPABASE_PUBLISHABLE_KEY =
     import.meta.env["VITE_SUPABASE_PUBLISHABLE_KEY"] ||
     process.env["SUPABASE_PUBLISHABLE_KEY"] ||
-    "placeholder-key";
+    "sb_publishable_lSwJkYwMacJQrmR3odcpcw_B7q5CbVR";
 
   if (!import.meta.env["VITE_SUPABASE_URL"] && !process.env["SUPABASE_URL"]) {
     console.warn("[Supabase] Missing Supabase environment variables; using fallback client.");

@@ -49,21 +49,28 @@ function Review() {
       overall_feedback: review.overall_feedback || null,
     };
 
-    const { error: insertError } = await supabase.from("client_feedback").insert(payload);
+    try {
+      const { error: insertError } = await supabase.from("client_feedback").insert(payload);
 
-    setSending(false);
+      setSending(false);
 
-    if (insertError) {
-      console.error("Supabase submission error:", insertError);
-      const details = [insertError.message, insertError.details, insertError.hint]
-        .filter(Boolean)
-        .join(" — ");
-      setError(`Submission error: ${details || "Could not insert record into client_feedback."}`);
-      return;
+      if (insertError) {
+        console.error("Supabase submission error:", insertError);
+        const details = [insertError.message, insertError.details, insertError.hint]
+          .filter(Boolean)
+          .join(" — ");
+        setError(`Submission error: ${details || "Could not insert record into client_feedback."}`);
+        return;
+      }
+
+      reset();
+      navigate({ to: "/thanks" });
+    } catch (err: unknown) {
+      setSending(false);
+      console.error("Network or fetch exception:", err);
+      const msg = err instanceof Error ? err.message : String(err);
+      setError(`Submission error: ${msg}. Please check your network connection or try again.`);
     }
-
-    reset();
-    navigate({ to: "/thanks" });
   }
 
   return (
