@@ -1,5 +1,5 @@
 import { Link } from "@tanstack/react-router";
-import waLogo from "@/assets/WA.png";
+import navLogo from "@/assets/2.png";
 
 const items = [
   { to: "/", label: "Overview" },
@@ -18,9 +18,9 @@ export function SiteNav() {
       >
         <Link to="/" className="shrink-0 flex items-center">
           <img
-            src={waLogo}
+            src={navLogo}
             alt="Clouds & Spirits"
-            className="h-14 sm:h-16 w-auto max-w-[240px] object-contain object-left"
+            className="h-12 sm:h-15 w-auto max-w-[240px] object-contain object-left"
           />
         </Link>
 

@@ -2,6 +2,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { useState } from "react";
 import { PageFooterNav } from "@/components/Page";
 import { heroImage } from "@/lib/brand";
+import { LogoVersionsSection } from "@/components/LogoVersionsSection";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -66,14 +67,19 @@ function Overview() {
         ) : null}
       </section>
 
-      <figure className="mt-14 overflow-hidden rounded-2xl border border-border">
+      <figure className="group relative mt-14 overflow-hidden rounded-2xl border border-border">
         <img
           src={heroImage}
           alt="Clouds & Spirits brand exploration"
           width={1280}
           height={960}
-          className="w-full object-cover"
+          className="w-full object-cover transition-transform duration-500 group-hover:scale-[1.02]"
         />
+        <div className="absolute top-4 left-4 z-10 opacity-0 transition-opacity duration-300 group-hover:opacity-100 pointer-events-none">
+          <span className="inline-flex items-center rounded-lg bg-black/80 px-3.5 py-1.5 text-[13px] font-medium tracking-wide text-white backdrop-blur-md border border-white/15 shadow-lg">
+            Version 1
+          </span>
+        </div>
       </figure>
 
       <section className="mt-16 grid gap-4 sm:grid-cols-3">
@@ -88,6 +94,12 @@ function Overview() {
           </div>
         ))}
       </section>
+
+      <LogoVersionsSection
+        title="Logo Directions"
+        subtitle="Explore the logo version concepts on dark backgrounds."
+        className="mt-16 mb-12"
+      />
 
       <PageFooterNav next={{ to: "/colors", label: "Color direction" }} />
     </>

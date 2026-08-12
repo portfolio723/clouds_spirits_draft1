@@ -60,6 +60,7 @@ export type LogoAsset = {
   title: string;
   description: string;
   image: string;
+  versionTag?: string;
 };
 
 export const logoAssets: LogoAsset[] = [
@@ -69,6 +70,7 @@ export const logoAssets: LogoAsset[] = [
     title: "Logo Application 01",
     description: "Logo variation and application showcase 01.",
     image: logo11,
+    versionTag: "version 02",
   },
   {
     id: "12",
@@ -76,6 +78,7 @@ export const logoAssets: LogoAsset[] = [
     title: "Logo Application 02",
     description: "Logo variation and application showcase 02.",
     image: logo12,
+    versionTag: "version 01",
   },
   {
     id: "15",
@@ -83,6 +86,7 @@ export const logoAssets: LogoAsset[] = [
     title: "Logo Application 03",
     description: "Logo variation and application showcase 03.",
     image: logo15,
+    versionTag: "version 04",
   },
   {
     id: "14",
@@ -90,6 +94,7 @@ export const logoAssets: LogoAsset[] = [
     title: "Logo Application 04",
     description: "Logo variation and application showcase 04.",
     image: logo16,
+    versionTag: "version 03",
   },
 ];
 
