@@ -35,8 +35,7 @@ function Review() {
     setSending(true);
     setError(null);
 
-    // Primary attempt: Insert with dedicated name, age, gender columns
-    let { error: insertError } = await supabase.from("client_feedback").insert({
+    const payload = {
       project_slug: "clouds-and-spirits",
       name: review.name || null,
       age: review.age || null,
@@ -48,46 +47,21 @@ function Review() {
       typography_note: review.typography_note || null,
       logo_note: review.logo_note || null,
       overall_feedback: review.overall_feedback || null,
-    });
+    };
 
-    // Fallback attempt: If schema doesn't have name/age/gender columns yet
-    if (insertError) {
-      console.warn("Primary insert failed, attempting fallback:", insertError);
-      const reviewerMeta = [
-        review.name ? `Name: ${review.name}` : null,
-        review.age ? `Age: ${review.age}` : null,
-        review.gender ? `Gender: ${review.gender}` : null,
-      ]
-        .filter(Boolean)
-        .join(" | ");
-
-      const combinedOverall = [
-        reviewerMeta ? `[Reviewer Info: ${reviewerMeta}]` : null,
-        review.overall_feedback || null,
-      ]
-        .filter(Boolean)
-        .join("\n\n");
-
-      const retryRes = await supabase.from("client_feedback").insert({
-        project_slug: "clouds-and-spirits",
-        selected_logo: review.selected_logo || null,
-        selected_typography: review.selected_typography || null,
-        color_feedback: review.color_feedback || null,
-        colors_note: review.colors_note || null,
-        typography_note: review.typography_note || null,
-        logo_note: review.logo_note || null,
-        overall_feedback: combinedOverall || null,
-      });
-
-      insertError = retryRes.error;
-    }
+    const { error: insertError } = await supabase.from("client_feedback").insert(payload);
 
     setSending(false);
+
     if (insertError) {
       console.error("Supabase submission error:", insertError);
-      setError("We couldn't send your feedback just now. Please try again.");
+      const details = [insertError.message, insertError.details, insertError.hint]
+        .filter(Boolean)
+        .join(" — ");
+      setError(`Submission error: ${details || "Could not insert record into client_feedback."}`);
       return;
     }
+
     reset();
     navigate({ to: "/thanks" });
   }
