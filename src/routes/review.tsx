@@ -26,7 +26,7 @@ export const Route = createFileRoute("/review")({
 });
 
 function Review() {
-  const { review, set } = useReview();
+  const { review, set, reset } = useReview();
   const navigate = useNavigate();
   const [sending, setSending] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -50,6 +50,7 @@ function Review() {
       .join("\n\n");
 
     const { error: insertError } = await supabase.from("client_feedback").insert({
+      project_slug: "clouds-and-spirits",
       selected_logo: review.selected_logo || null,
       selected_typography: review.selected_typography || null,
       color_feedback: review.color_feedback || null,
@@ -60,9 +61,11 @@ function Review() {
     });
     setSending(false);
     if (insertError) {
+      console.error("Supabase submission error:", insertError);
       setError("We couldn't send your feedback just now. Please try again.");
       return;
     }
+    reset();
     navigate({ to: "/thanks" });
   }
 
