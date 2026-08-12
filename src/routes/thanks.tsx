@@ -18,7 +18,7 @@ export const Route = createFileRoute("/thanks")({
 
 function Thanks() {
   return (
-    <section className="flex min-h-[60dvh] flex-col items-start justify-center py-24">
+    <section className="flex min-h-[60dvh] flex-col items-start justify-center py-8 sm:py-12 md:py-24">
       <span
         aria-hidden="true"
         className="inline-flex size-12 items-center justify-center rounded-full border border-accent text-[20px] text-accent"

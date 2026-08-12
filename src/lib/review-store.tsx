@@ -1,6 +1,9 @@
 import { createContext, useCallback, useContext, useEffect, useState, type ReactNode } from "react";
 
 export type ReviewState = {
+  name: string;
+  age: string;
+  gender: string;
   selected_typography: string;
   selected_logo: string;
   color_feedback: string;
@@ -11,6 +14,9 @@ export type ReviewState = {
 };
 
 const empty: ReviewState = {
+  name: "",
+  age: "",
+  gender: "",
   selected_typography: "",
   selected_logo: "",
   color_feedback: "",

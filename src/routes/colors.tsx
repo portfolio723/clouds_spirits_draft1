@@ -1,10 +1,18 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { PageFooterNav, PageHeader } from "@/components/Page";
 import { FeedbackBox } from "@/components/FeedbackBox";
 import { Lightbox } from "@/components/Lightbox";
 import { brandColors } from "@/lib/brand";
 import { useReview } from "@/lib/review-store";
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
+  type CarouselApi,
+} from "@/components/ui/carousel";
 
 import mockup17 from "@/assets/17.png";
 import mockup18 from "@/assets/18.png";
@@ -57,6 +65,16 @@ function Colors() {
   const { review, set } = useReview();
   const [hoveredColor, setHoveredColor] = useState<string | null>(null);
   const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
+  const [api, setApi] = useState<CarouselApi>();
+  const [current, setCurrent] = useState(0);
+
+  useEffect(() => {
+    if (!api) return;
+    setCurrent(api.selectedScrollSnap());
+    api.on("select", () => {
+      setCurrent(api.selectedScrollSnap());
+    });
+  }, [api]);
 
   return (
     <>
@@ -148,7 +166,62 @@ function Colors() {
           </p>
         </div>
 
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+        {/* Mobile Carousel */}
+        <div className="md:hidden">
+          <Carousel setApi={setApi} className="w-full">
+            <CarouselContent className="-ml-3">
+              {colorMockups.map((item, idx) => (
+                <CarouselItem key={item.title} className="pl-3 basis-[82%] sm:basis-[60%]">
+                  <button
+                    type="button"
+                    onClick={() => setLightboxIndex(idx)}
+                    className="group hover-lift w-full h-full relative overflow-hidden rounded-2xl border border-border text-left hover:border-border-strong bg-card flex flex-col"
+                  >
+                    <div className="aspect-[3/4] w-full overflow-hidden bg-surface relative">
+                      <img
+                        src={item.image}
+                        alt={item.title}
+                        className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+                      />
+                    </div>
+                    <div className="p-4 flex-1 flex flex-col justify-between">
+                      <div>
+                        <h3 className="font-display text-[15px] font-medium text-foreground">
+                          {item.title}
+                        </h3>
+                        <p className="mt-0.5 text-[12px] text-muted-foreground line-clamp-2">
+                          {item.description}
+                        </p>
+                      </div>
+                    </div>
+                  </button>
+                </CarouselItem>
+              ))}
+            </CarouselContent>
+            <div className="mt-4 flex items-center justify-between px-1">
+              <div className="flex gap-2">
+                {colorMockups.map((_, idx) => (
+                  <button
+                    key={idx}
+                    type="button"
+                    onClick={() => api?.scrollTo(idx)}
+                    aria-label={`Go to slide ${idx + 1}`}
+                    className={`h-2 rounded-full transition-all duration-300 ${
+                      current === idx ? "w-6 bg-primary" : "w-2 bg-border"
+                    }`}
+                  />
+                ))}
+              </div>
+              <div className="flex gap-1.5">
+                <CarouselPrevious className="static translate-y-0 h-9 w-9 border-border bg-surface text-foreground" />
+                <CarouselNext className="static translate-y-0 h-9 w-9 border-border bg-surface text-foreground" />
+              </div>
+            </div>
+          </Carousel>
+        </div>
+
+        {/* Desktop Grid */}
+        <div className="hidden md:grid md:grid-cols-2 lg:grid-cols-4 gap-4">
           {colorMockups.map((item, idx) => (
             <button
               key={item.title}

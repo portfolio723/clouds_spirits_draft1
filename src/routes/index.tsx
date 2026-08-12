@@ -75,47 +75,23 @@ function Overview() {
   }, [api]);
 
   return (
-    <>
-      <section className="pt-20 pb-4 md:pt-32">
+    <div className="flex flex-col">
+      <section className="order-1 pt-6 sm:pt-10 pb-2 md:pt-32 md:pb-4">
         <p className="label-xs">Brand exploration · Draft 01</p>
-        <h1 className="mt-5 text-[40px] leading-[1.05] md:text-[64px]">Clouds &amp; Spirits</h1>
-        <p className="mt-6 max-w-[52ch] text-[18px] text-foreground md:text-[20px]">
+        <h1 className="mt-3 text-[36px] leading-[1.05] sm:text-[40px] md:text-[64px]">
+          Clouds &amp; Spirits
+        </h1>
+        <p className="mt-4 max-w-[52ch] text-[17px] text-foreground sm:text-[18px] md:text-[20px]">
           Your first brand direction is ready to review.
         </p>
-        <p className="mt-4 max-w-[62ch] text-[16px] text-muted-foreground md:text-[17px]">
+        <p className="mt-3 max-w-[62ch] text-[15px] text-muted-foreground sm:text-[16px] md:text-[17px]">
           We've explored the visual identity across color, typography and logo directions. Take a
           look through the options and tell us what feels right.
         </p>
-
-        <div className="mt-10 flex flex-wrap items-center gap-3">
-          <Link
-            to="/colors"
-            className="inline-flex h-12 items-center rounded-xl bg-primary px-6 text-[14px] font-medium text-primary-foreground transition-opacity hover:opacity-90"
-          >
-            View Draft 01
-          </Link>
-          <button
-            type="button"
-            onClick={() => setOpen((value) => !value)}
-            aria-expanded={open}
-            className="inline-flex h-12 items-center rounded-xl border border-border-strong bg-background px-6 text-[14px] font-medium text-foreground transition-colors hover:bg-surface"
-          >
-            About this review
-          </button>
-        </div>
-
-        {open ? (
-          <div className="mt-6 max-w-[62ch] rounded-2xl border border-border bg-surface p-6">
-            <h2 className="text-[20px]">What is this?</h2>
-            <p className="mt-3 text-[15px] text-muted-foreground">
-              This is an early visual exploration, not the final brand system. Your feedback will
-              help us refine the selected direction before we develop the complete identity.
-            </p>
-          </div>
-        ) : null}
       </section>
 
-      <div className="relative mt-14">
+      {/* Hero Image Carousel (Order 2 on mobile, Order 3 on desktop) */}
+      <div className="order-2 md:order-3 relative mt-6 md:mt-14">
         <Carousel setApi={setApi} className="w-full">
           <CarouselContent>
             {heroSlides.map((slide) => (
@@ -156,7 +132,38 @@ function Overview() {
         </div>
       </div>
 
-      <section className="mt-16 grid gap-4 sm:grid-cols-3">
+      {/* 2 CTAs and About Box (Order 3 on mobile, Order 2 on desktop) */}
+      <div className="order-3 md:order-2 mt-6 md:mt-10">
+        <div className="flex flex-wrap items-center gap-3">
+          <Link
+            to="/colors"
+            className="inline-flex h-12 items-center rounded-xl bg-primary px-6 text-[14px] font-medium text-primary-foreground transition-opacity hover:opacity-90"
+          >
+            View Draft 01
+          </Link>
+          <button
+            type="button"
+            onClick={() => setOpen((value) => !value)}
+            aria-expanded={open}
+            className="inline-flex h-12 items-center rounded-xl border border-border-strong bg-background px-6 text-[14px] font-medium text-foreground transition-colors hover:bg-surface"
+          >
+            About this review
+          </button>
+        </div>
+
+        {open ? (
+          <div className="mt-6 max-w-[62ch] rounded-2xl border border-border bg-surface p-6">
+            <h2 className="text-[20px]">What is this?</h2>
+            <p className="mt-3 text-[15px] text-muted-foreground">
+              This is an early visual exploration, not the final brand system. Your feedback will
+              help us refine the selected direction before we develop the complete identity.
+            </p>
+          </div>
+        ) : null}
+      </div>
+
+      {/* Feature Cards Section */}
+      <section className="order-4 mt-12 md:mt-16 grid gap-4 sm:grid-cols-3">
         {[
           { title: "Color", text: "Six colours drawn from the interior, lighting and materials." },
           { title: "Typography", text: "Two type directions to compare side by side." },
@@ -169,13 +176,18 @@ function Overview() {
         ))}
       </section>
 
-      <LogoVersionsSection
-        title="Logo Directions"
-        subtitle="Explore the logo version concepts on dark backgrounds."
-        className="mt-16 mb-12"
-      />
+      {/* Logo Directions Carousel */}
+      <div className="order-5">
+        <LogoVersionsSection
+          title="Logo Directions"
+          subtitle="Explore the logo version concepts on dark backgrounds."
+          className="mt-12 md:mt-16 mb-8 md:mb-12"
+        />
+      </div>
 
-      <PageFooterNav next={{ to: "/colors", label: "Color direction" }} />
-    </>
+      <div className="order-6">
+        <PageFooterNav next={{ to: "/colors", label: "Color direction" }} />
+      </div>
+    </div>
   );
 }

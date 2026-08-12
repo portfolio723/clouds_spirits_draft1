@@ -34,6 +34,21 @@ function Review() {
   async function send() {
     setSending(true);
     setError(null);
+    const reviewerMeta = [
+      review.name ? `Name: ${review.name}` : null,
+      review.age ? `Age: ${review.age}` : null,
+      review.gender ? `Gender: ${review.gender}` : null,
+    ]
+      .filter(Boolean)
+      .join(" | ");
+
+    const combinedOverall = [
+      reviewerMeta ? `[Reviewer Info: ${reviewerMeta}]` : null,
+      review.overall_feedback || null,
+    ]
+      .filter(Boolean)
+      .join("\n\n");
+
     const { error: insertError } = await supabase.from("client_feedback").insert({
       selected_logo: review.selected_logo || null,
       selected_typography: review.selected_typography || null,
@@ -41,7 +56,7 @@ function Review() {
       colors_note: review.colors_note || null,
       typography_note: review.typography_note || null,
       logo_note: review.logo_note || null,
-      overall_feedback: review.overall_feedback || null,
+      overall_feedback: combinedOverall || null,
     });
     setSending(false);
     if (insertError) {
@@ -58,6 +73,73 @@ function Review() {
         title="Your Draft 01 Review"
         intro="Review the directions above and tell us what you would like us to take forward."
       />
+
+      <div className="mb-10 rounded-2xl border border-border bg-card p-6 shadow-sm sm:p-8">
+        <h2 className="font-display text-[20px] font-medium text-foreground">Your Details</h2>
+        <p className="mt-1 text-[14px] text-muted-foreground">
+          Please share your name, age, and gender before reviewing the brand variations.
+        </p>
+
+        <div className="mt-6 grid gap-5 sm:grid-cols-3">
+          <div>
+            <label
+              htmlFor="reviewer-name"
+              className="block text-[14px] font-medium text-foreground mb-2"
+            >
+              Name
+            </label>
+            <input
+              id="reviewer-name"
+              type="text"
+              placeholder="Your name"
+              value={review.name || ""}
+              onChange={(e) => set("name", e.target.value)}
+              className="w-full h-11 rounded-xl border border-border bg-background px-4 text-[14px] text-foreground placeholder:text-muted-foreground focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary transition-colors"
+            />
+          </div>
+
+          <div>
+            <label
+              htmlFor="reviewer-age"
+              className="block text-[14px] font-medium text-foreground mb-2"
+            >
+              Age
+            </label>
+            <input
+              id="reviewer-age"
+              type="number"
+              min="1"
+              max="120"
+              placeholder="Your age"
+              value={review.age || ""}
+              onChange={(e) => set("age", e.target.value)}
+              className="w-full h-11 rounded-xl border border-border bg-background px-4 text-[14px] text-foreground placeholder:text-muted-foreground focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary transition-colors"
+            />
+          </div>
+
+          <div>
+            <label
+              htmlFor="reviewer-gender"
+              className="block text-[14px] font-medium text-foreground mb-2"
+            >
+              Gender
+            </label>
+            <select
+              id="reviewer-gender"
+              value={review.gender || ""}
+              onChange={(e) => set("gender", e.target.value)}
+              className="w-full h-11 rounded-xl border border-border bg-background px-4 text-[14px] text-foreground focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary transition-colors"
+            >
+              <option value="">Select gender</option>
+              <option value="male">Male</option>
+              <option value="female">Female</option>
+              <option value="non-binary">Non-binary</option>
+              <option value="prefer-not-to-say">Prefer not to say</option>
+              <option value="other">Other</option>
+            </select>
+          </div>
+        </div>
+      </div>
 
       <ChoiceGroup
         legend="Logo Variation"

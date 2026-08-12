@@ -11,11 +11,11 @@ export function PageHeader({
   intro?: string;
 }) {
   return (
-    <header className="pt-16 pb-10 md:pt-24 md:pb-14">
+    <header className="pt-6 sm:pt-10 pb-8 md:pt-24 md:pb-14">
       <p className="label-xs">{label}</p>
-      <h1 className="mt-4 text-[32px] md:text-[44px]">{title}</h1>
+      <h1 className="mt-3 text-[32px] md:text-[44px]">{title}</h1>
       {intro ? (
-        <p className="mt-4 max-w-[62ch] text-[16px] text-muted-foreground md:text-[17px]">
+        <p className="mt-3 max-w-[62ch] text-[16px] text-muted-foreground md:text-[17px]">
           {intro}
         </p>
       ) : null}
