@@ -34,31 +34,54 @@ function Review() {
   async function send() {
     setSending(true);
     setError(null);
-    const reviewerMeta = [
-      review.name ? `Name: ${review.name}` : null,
-      review.age ? `Age: ${review.age}` : null,
-      review.gender ? `Gender: ${review.gender}` : null,
-    ]
-      .filter(Boolean)
-      .join(" | ");
 
-    const combinedOverall = [
-      reviewerMeta ? `[Reviewer Info: ${reviewerMeta}]` : null,
-      review.overall_feedback || null,
-    ]
-      .filter(Boolean)
-      .join("\n\n");
-
-    const { error: insertError } = await supabase.from("client_feedback").insert({
+    // Primary attempt: Insert with dedicated name, age, gender columns
+    let { error: insertError } = await supabase.from("client_feedback").insert({
       project_slug: "clouds-and-spirits",
+      name: review.name || null,
+      age: review.age || null,
+      gender: review.gender || null,
       selected_logo: review.selected_logo || null,
       selected_typography: review.selected_typography || null,
       color_feedback: review.color_feedback || null,
       colors_note: review.colors_note || null,
       typography_note: review.typography_note || null,
       logo_note: review.logo_note || null,
-      overall_feedback: combinedOverall || null,
+      overall_feedback: review.overall_feedback || null,
     });
+
+    // Fallback attempt: If schema doesn't have name/age/gender columns yet
+    if (insertError) {
+      console.warn("Primary insert failed, attempting fallback:", insertError);
+      const reviewerMeta = [
+        review.name ? `Name: ${review.name}` : null,
+        review.age ? `Age: ${review.age}` : null,
+        review.gender ? `Gender: ${review.gender}` : null,
+      ]
+        .filter(Boolean)
+        .join(" | ");
+
+      const combinedOverall = [
+        reviewerMeta ? `[Reviewer Info: ${reviewerMeta}]` : null,
+        review.overall_feedback || null,
+      ]
+        .filter(Boolean)
+        .join("\n\n");
+
+      const retryRes = await supabase.from("client_feedback").insert({
+        project_slug: "clouds-and-spirits",
+        selected_logo: review.selected_logo || null,
+        selected_typography: review.selected_typography || null,
+        color_feedback: review.color_feedback || null,
+        colors_note: review.colors_note || null,
+        typography_note: review.typography_note || null,
+        logo_note: review.logo_note || null,
+        overall_feedback: combinedOverall || null,
+      });
+
+      insertError = retryRes.error;
+    }
+
     setSending(false);
     if (insertError) {
       console.error("Supabase submission error:", insertError);

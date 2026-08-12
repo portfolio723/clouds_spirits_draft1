@@ -15,6 +15,9 @@ export type Database = {
           created_at: string;
           id: string;
           logo_note: string | null;
+          name: string | null;
+          age: string | null;
+          gender: string | null;
           overall_feedback: string | null;
           project_slug: string;
           selected_logo: string | null;
@@ -27,6 +30,9 @@ export type Database = {
           created_at?: string;
           id?: string;
           logo_note?: string | null;
+          name?: string | null;
+          age?: string | null;
+          gender?: string | null;
           overall_feedback?: string | null;
           project_slug?: string;
           selected_logo?: string | null;
@@ -39,6 +45,9 @@ export type Database = {
           created_at?: string;
           id?: string;
           logo_note?: string | null;
+          name?: string | null;
+          age?: string | null;
+          gender?: string | null;
           overall_feedback?: string | null;
           project_slug?: string;
           selected_logo?: string | null;
